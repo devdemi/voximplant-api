@@ -1,7 +1,7 @@
 <?php
 namespace Voximplant;
 
-use Voximplant\Transport;
+use Voximplant\Transport\Curl;
 
 class API {
 
@@ -28,11 +28,11 @@ class API {
         $this->_apiKey = $options['apiKey'];
         $this->_accountId = $options['accountId'];
 
-        if ($options['transport'] instanceof Transport) {
+        if (isset($options['transport']) && $options['transport'] instanceof Transport) {
             $this->_transport = $options['transport'];
         }
 
-        $this->_options = $options;
+        $this->_options = array_merge($this->_options, $options);
     }
 
     /**
@@ -45,14 +45,20 @@ class API {
     function __call($name, $args)
     {
         $method = Transport\Transport::GET;
-        if (isset($args['method'])) {
-            $method = $args['method'];
-            unset($args['method']);
+        if (isset($args['1'])) {
+            $method = $args['1'];
+            unset($args['1']);
         }
-        $args['account_id'] = $this->_accountId;
-        $args['api_key'] = $this->_apiKey;
+        $params = array(
+            'account_id' => $this->_accountId,
+            'api_key' => $this->_apiKey
+        );
 
-        return $this->_getTransport()->send($this->_getApiUrl() . $name, $method, $args);
+        if (isset($args[0]) && is_array($args[0])) {
+            $params = array_merge($params, $args[0]);
+        }
+
+        return $this->_getTransport()->send($this->_getApiUrl() . $name, $method, $params);
     }
 
     /**
@@ -74,8 +80,8 @@ class API {
     protected function _getTransport()
     {
         if (!($this->_transport instanceof Transport\Transport)) {
-            $className = ucfirst($this->getOption('transport'));
-            $this->_transport = new $className;
+            $className = __NAMESPACE__ . '\\Transport\\' . ucfirst($this->getOption('transport'));
+            $this->_transport = new $className();
         }
         return $this->_transport;
     }
