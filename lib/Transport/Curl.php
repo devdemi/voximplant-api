@@ -2,6 +2,8 @@
 
 namespace Voximplant\Transport;
 
+use Voximplant\Transport\TransportException;
+
 class Curl implements Transport
 {
     public function send($url, $method, $arguments = array())
@@ -24,11 +26,11 @@ class Curl implements Transport
         curl_setopt($curl, CURLOPT_CAINFO, __DIR__ . "/cacert.pem");
         $body = curl_exec ($curl);
 
-        $result = new \StdClass();
-        $result->status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $result->body = $body;
+        if (curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200) {
+            throw new TransportException('Voximplant server can\'t process request');
+        }
         curl_close ($curl);
 
-        return $result;
+        return $body;
     }
 }

@@ -12,6 +12,6 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "classmap": ["lib/"]
+        "psr-0": { "Voximplant": "lib/" }
     }
 }

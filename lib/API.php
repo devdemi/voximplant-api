@@ -1,7 +1,8 @@
 <?php
 namespace Voximplant;
 
-use Voximplant\Transport\Curl;
+use Voximplant\Exception\ValidationException;
+use Voximplant\Exception\ResponseException;
 
 class API {
 
@@ -18,12 +19,12 @@ class API {
      * Create instance of \Voximplant\API
      *
      * @param array $options
-     * @throws \ValidateException
+     * @throws ValidationException
      */
     function __construct($options)
     {
         if (!isset($options['apiKey']) || !isset($options['accountId'])) {
-            throw new \ValidateException('You need to provide apiKey and accountId in `options`');
+            throw new ValidationException('You need to provide apiKey and accountId in `options`');
         }
         $this->_apiKey = $options['apiKey'];
         $this->_accountId = $options['accountId'];
@@ -40,6 +41,7 @@ class API {
      *
      * @param string $name
      * @param array $args
+     * @throws ResponseException
      * @return \StdClass
      */
     function __call($name, $args)
@@ -58,7 +60,11 @@ class API {
             $params = array_merge($params, $args[0]);
         }
 
-        return $this->_getTransport()->send($this->_getApiUrl() . $name, $method, $params);
+        $result = json_decode($this->_getTransport()->send($this->_getApiUrl() . $name, $method, $params));
+        if ($result->error) {
+            throw new ResponseException($result->error->msg, $result->error->code);
+        }
+        return $result;
     }
 
     /**
