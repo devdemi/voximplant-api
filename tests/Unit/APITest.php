@@ -35,7 +35,7 @@ class APITest extends \PHPUnit_Framework_TestCase
      */
     public function testCallVoximplantApiMethod()
     {
-        $uid = time();
+        $uid = mt_rand();
         $params = array(
             'user_name' => 'test_user_' . $uid,
             'user_display_name' => 'Test User ' . $uid,
@@ -54,7 +54,7 @@ class APITest extends \PHPUnit_Framework_TestCase
      */
     public function testCallVoximplantApiMethodWithError()
     {
-        $uid = time();
+        $uid =  mt_rand();
         $params = array(
             'user_name' => 'test_user_' . $uid,
             'user_display_name' => 'Test User ' . $uid
