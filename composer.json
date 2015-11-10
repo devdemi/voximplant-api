@@ -12,6 +12,9 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "psr-0": { "Voximplant": "lib/" }
+        "psr-0": {
+            "Voximplant": "lib",
+            "Voximplant\\Unit": "tests"
+        }
     }
 }

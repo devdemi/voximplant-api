@@ -46,6 +46,9 @@ class API {
      */
     function __call($name, $args)
     {
+        // API's method should have first character uppercase
+        $name = ucfirst($name);
+
         $method = Transport\Transport::GET;
         if (isset($args['1'])) {
             $method = $args['1'];
@@ -61,7 +64,7 @@ class API {
         }
 
         $result = json_decode($this->_getTransport()->send($this->_getApiUrl() . $name, $method, $params));
-        if ($result->error) {
+        if (isset($result->error)) {
             throw new ResponseException($result->error->msg, $result->error->code);
         }
         return $result;
