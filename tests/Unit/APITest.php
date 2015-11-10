@@ -35,15 +35,12 @@ class APITest extends \PHPUnit_Framework_TestCase
      */
     public function testCallVoximplantApiMethod()
     {
-        $uid = mt_rand();
         $params = array(
-            'user_name' => 'test_user_' . $uid,
-            'user_display_name' => 'Test User ' . $uid,
-            'user_password' => 'test123'
+            'user_name' => 'test_user_1447160871'
         );
 
-        $result = $this->_getApiInstance()->addUser($params);
-        $this->assertEquals(1, $result->result);
+        $result = $this->_getApiInstance()->getUsers($params);
+        $this->assertEquals(1, $result->count);
     }
 
 
