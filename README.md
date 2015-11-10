@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/devdemi/voximplant-api.svg?branch=master)](https://travis-ci.org/devdemi/voximplant-api)
+
 # PHP Voximpalnt API SDK
 
 ## Requirements

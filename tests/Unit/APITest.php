@@ -29,9 +29,9 @@ class APITest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test calling Voximplant API method AddUser
+     * Test calling Voximplant API method GetUsers
      *
-     * @link http://voximplant.com/docs/references/httpapi/#toc-adduser
+     * @link http://voximplant.com/docs/references/httpapi/#toc-getusers
      */
     public function testCallVoximplantApiMethod()
     {
