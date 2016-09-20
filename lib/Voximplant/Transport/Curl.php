@@ -2,7 +2,7 @@
 
 namespace Voximplant\Transport;
 
-use Voximplant\Transport\TransportException;
+use Voximplant\Exception\TransportException;
 
 class Curl implements Transport
 {
